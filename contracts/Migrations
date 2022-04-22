@@ -1,0 +1,37 @@
+//SPDX-License-Identifier:MIT
+pragma solidity ^0.8.0;
+
+
+
+contract Payable {
+    address payable public owner;
+
+    constructor() payable {
+        owner = payable(msg.sender);
+    }
+
+    function deposit() public payable{
+
+    }
+
+    function getAmount() public view returns (uint){
+        uint amount = address(this).balance;
+
+        return amount;
+    }
+
+    function withdraw() public {
+        uint amount = address(this).balance;
+
+        (bool succes,) = owner.call{value: amount}("");
+        require(succes, "Withdraw Gagal");
+        
+
+    }
+    
+    function transfer(address payable _to, uint _amount) public {
+        (bool succes,) = _to.call{value: _amount}("");
+        require(succes, "Transfer Gagal");
+
+    }
+}
